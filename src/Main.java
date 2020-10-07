@@ -63,10 +63,14 @@ public class Main
 
     public static void main (String[] args) throws Exception
     {
+        byte[] clbytes = extractResource ("samclass.class");
+        ByteArrayClassLoader bac = new ByteArrayClassLoader (clbytes);
+        Class cl = bac.loadClass ("samclass");
+        Method meth = cl.getMethod("xmain", PrintStream.class, String[].class);
         String[] arg = {"-stdout","dummy","hello world"};
         ByteArrayOutputStream ba = new ByteArrayOutputStream(10000);
         PrintStream p = new PrintStream (ba);
-        samclass.xmain (p, arg);
+        meth.invoke(null, p, (Object) arg);
         byte[] result = ba.toByteArray ();
         swap4 (result, 4);
         swap4 (result, 16);
@@ -95,8 +99,5 @@ public class Main
 //        Class c = bc.loadClass ("javasam");
 //        System.out.println (c);
 //
-//        Method meth = c.getMethod("main", String[].class);
-//        String[] params = {"hello","doof"}; // init params accordingly
-//        meth.invoke(null, (Object) params);
     }
 }
