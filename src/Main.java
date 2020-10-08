@@ -1,19 +1,38 @@
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.Line;
-import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
+import java.util.Scanner;
 
 public class Main
 {
+    static Method meth;
+
+    /*
+     * Load the sam!
+     */
+    static
+    {
+        try
+        {
+            byte[] clbytes = extractResource ("samclass.class");
+            ByteArrayClassLoader bac = new ByteArrayClassLoader (clbytes);
+            Class<?> cl = bac.loadClass ("samclass");
+            meth = cl.getMethod("xmain", PrintStream.class, String[].class);
+        }
+        catch (Exception e)
+        {
+            System.out.println ("Init failed: "+e);
+        }
+    }
+
+    /**
+     * Get byte array from resource bundle
+     * @param name what resource
+     * @return the resource as byte array
+     * @throws Exception if smth. went wrong
+     */
     static public byte[] extractResource (String name) throws Exception
     {
         InputStream is = ClassLoader.getSystemResourceAsStream (name);
@@ -33,15 +52,17 @@ public class Main
         return out.toByteArray ();
     }
 
-    public static Clip playWave (byte[] data, boolean cont) throws Exception
+    /**
+     * Play WAV
+     * @param data the WAV file as byte array
+     * @throws Exception If smth. went wrong
+     */
+    public static void playWave (byte[] data) throws Exception
     {
         final Clip clip = (Clip) AudioSystem.getLine (new Line.Info (Clip.class));
         InputStream inp  = new BufferedInputStream(new ByteArrayInputStream (data));
         clip.open (AudioSystem.getAudioInputStream (inp));
-        if (cont)
-            clip.loop (Clip.LOOP_CONTINUOUSLY);
         clip.start ();
-        return clip;
     }
 
     public static void swap2 (byte[] in, int off)
@@ -61,14 +82,16 @@ public class Main
         in[2+off] = tmp;
     }
 
-    public static void main (String[] args) throws Exception
+    /**
+     * Genetrate WAV from text input using SAM
+     * @param txt text to speak
+     * @return WAV data
+     * @throws Exception if smth. went wrong
+     */
+    public static byte[] doSam (String txt) throws Exception
     {
-        byte[] clbytes = extractResource ("samclass.class");
-        ByteArrayClassLoader bac = new ByteArrayClassLoader (clbytes);
-        Class cl = bac.loadClass ("samclass");
-        Method meth = cl.getMethod("xmain", PrintStream.class, String[].class);
-        String[] arg = {"-stdout","dummy","hello world"};
-        ByteArrayOutputStream ba = new ByteArrayOutputStream(10000);
+        String[] arg = {"-stdout","dummy",txt};
+        ByteArrayOutputStream ba = new ByteArrayOutputStream();
         PrintStream p = new PrintStream (ba);
         meth.invoke(null, p, (Object) arg);
         byte[] result = ba.toByteArray ();
@@ -84,20 +107,22 @@ public class Main
         result[44] = (byte)0xcd;
         result[45] = (byte)0xcd;
         result[46] = (byte)0xcd;
+        return result;
+    }
 
-
-//                                Path path = Paths.get("C:\\Users\\Administrator\\Desktop\\lljvm\\wavs\\repwav.dat");
-//                                Files.write(path, result);
-
-        playWave (result, false);
-        System.out.println (result);
-        Thread.sleep (10000);
-
-//        byte[] arr = extractResource ("javasam.class");
-//        ByteArrayClassLoader bc = new ByteArrayClassLoader (arr);
-//        System.out.println (arr);
-//        Class c = bc.loadClass ("javasam");
-//        System.out.println (c);
-//
+    /**
+     * Main loop
+     * @throws Exception if smth went wrong
+     */
+    public static void main (String[] irgnored) throws Exception
+    {
+        byte[] result = doSam ("Hello, I am Sam, the software mouth.");
+        playWave (result);
+        Scanner keyboard = new Scanner(System.in);
+        while (true)
+        {
+            System.out.println("Enter some words: ");
+            playWave (doSam (keyboard.nextLine ()));
+        }
     }
 }
