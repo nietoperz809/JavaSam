@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="JavaSam:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JavaSam_jar</output-path>
+    <root id="archive" name="JavaSam.jar">
+      <element id="module-output" name="JavaSam" />
+    </root>
+  </artifact>
+</component>
