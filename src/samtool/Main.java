@@ -15,9 +15,9 @@ public class Main
     {
         try
         {
-            byte[] clbytes = Utils.extractResource ("samclass.class");
+            byte[] clbytes = Utils.extractResource ("SamClass");
             ByteArrayClassLoader bac = new ByteArrayClassLoader (clbytes);
-            Class<?> cl = bac.loadClass ("samclass");
+            Class<?> cl = bac.loadClass ("samtool.SamClass");
             meth = cl.getMethod("xmain", PrintStream.class, String[].class);
         }
         catch (Exception e)
@@ -56,18 +56,6 @@ public class Main
         PrintStream p = new PrintStream (ba);
         meth.invoke(null, p, (Object) arg);
         byte[] result = ba.toByteArray ();
-        swap4 (result, 4);
-        swap4 (result, 16);
-        swap2 (result, 20);
-        swap2 (result, 22);
-        swap4 (result, 24);
-        swap4 (result, 28);
-        swap2 (result, 32);
-        swap2 (result, 34);
-        swap4 (result, 40);
-        result[44] = (byte)0xcd;
-        result[45] = (byte)0xcd;
-        result[46] = (byte)0xcd;
         return result;
     }
 
