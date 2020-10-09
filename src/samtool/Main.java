@@ -26,23 +26,6 @@ public class Main
         }
     }
 
-    public static void swap2 (byte[] in, int off)
-    {
-        byte tmp = in[0+off];
-        in[0+off] = in[1+off];
-        in[1+off] = tmp;
-    }
-
-    public static void swap4 (byte[] in, int off)
-    {
-        byte tmp = in[0+off];
-        in[0+off] = in[3+off];
-        in[3+off] = tmp;
-        tmp = in[1+off];
-        in[1+off] = in[2+off];
-        in[2+off] = tmp;
-    }
-
     /**
      * Genetrate WAV from text input using SAM
      * @param txt text to speak
