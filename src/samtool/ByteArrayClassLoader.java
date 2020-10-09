@@ -1,10 +1,11 @@
+package samtool;
 
 public class ByteArrayClassLoader extends ClassLoader
 {
     private final byte[] clazz;
 
     /**
-     * Creates a new instance of ByteArrayClassLoader
+     * Creates a new instance of samtool.ByteArrayClassLoader
      * @param clazz a class in a byte array
      */
     public ByteArrayClassLoader (byte[] clazz)
