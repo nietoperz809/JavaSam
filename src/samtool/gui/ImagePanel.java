@@ -14,8 +14,6 @@ class ImagePanel extends JComponent
 
     public ImagePanel ()
     {
-        Dimension d = new Dimension(300,300);
-        setPreferredSize (d);
         try
         {
             this.image = ImageIO.read (Objects.requireNonNull (Utils.getResource ("sam.jpg")));

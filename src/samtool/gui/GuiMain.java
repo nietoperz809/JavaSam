@@ -15,21 +15,17 @@ public class GuiMain
 
     public GuiMain ()
     {
-        textField1.addActionListener (new ActionListener ()
+        textField1.addActionListener (e ->
         {
-            @Override
-            public void actionPerformed (ActionEvent e)
+            String s = textField1.getText ();
+            try
             {
-                String s = textField1.getText ();
-                try
-                {
-                    Utils.playWave (Main.doSam (s));
-                    textField1.setText ("");
-                }
-                catch (Exception exception)
-                {
-                    exception.printStackTrace ();
-                }
+                Utils.playWave (Main.doSam (s));
+                textField1.setText ("");
+            }
+            catch (Exception exception)
+            {
+                exception.printStackTrace ();
             }
         });
     }
@@ -41,7 +37,10 @@ public class GuiMain
         frame.setContentPane (gui.MainPanel);
         frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
         gui.MainPanel.add (new ImagePanel (), BorderLayout.CENTER);
+
+        frame.setPreferredSize (new Dimension(500,500));
         frame.pack ();
+        frame.setLocationRelativeTo(null);
         frame.setVisible (true);
     }
 
