@@ -15,7 +15,7 @@ public class Main
     {
         try
         {
-            byte[] clbytes = Utils.extractResource ("SamClass");
+            byte[] clbytes = Utils.extractResource ("SamClass16");
             ByteArrayClassLoader bac = new ByteArrayClassLoader (clbytes);
             Class<?> cl = bac.loadClass ("samtool.SamClass");
             meth = cl.getMethod("xmain", PrintStream.class, String[].class);
@@ -37,6 +37,7 @@ public class Main
         String[] arg = {"-stdout","dummy",txt};
         ByteArrayOutputStream ba = new ByteArrayOutputStream();
         PrintStream p = new PrintStream (ba);
+        //SamClass.xmain (p, arg);
         meth.invoke(null, p, (Object) arg);
         byte[] result = ba.toByteArray ();
         return result;

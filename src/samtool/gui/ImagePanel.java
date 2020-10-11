@@ -6,7 +6,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.util.Objects;
 
 class ImagePanel extends JComponent
 {
@@ -16,7 +15,7 @@ class ImagePanel extends JComponent
     {
         try
         {
-            this.image = ImageIO.read (Objects.requireNonNull (Utils.getResource ("sam.jpg")));
+            this.image = ImageIO.read (Utils.getResource ("sam.jpg"));
         }
         catch (IOException e)
         {

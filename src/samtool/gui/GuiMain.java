@@ -35,7 +35,7 @@ public class GuiMain
         JFrame frame = new JFrame ("SAM for Java");
         GuiMain gui = new GuiMain();
         frame.setContentPane (gui.MainPanel);
-        frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation (WindowConstants.EXIT_ON_CLOSE);
         gui.MainPanel.add (new ImagePanel (), BorderLayout.CENTER);
 
         frame.setPreferredSize (new Dimension(500,500));
